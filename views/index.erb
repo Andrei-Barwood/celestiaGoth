@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CelestiaGoth OS 9999-in-1</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #0f0;
+      font-family: 'Courier New', Courier, monospace;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      width: 80%;
+      margin: 50px auto;
+      border: 4px double #0f0;
+      padding: 20px;
+      box-shadow: 0 0 20px #0f0;
+    }
+    h1 {
+      font-size: 3em;
+      text-shadow: 2px 2px #f00;
+    }
+    .menu {
+      list-style-type: none;
+      padding: 0;
+    }
+    .menu li {
+      margin: 15px 0;
+    }
+    .menu a {
+      color: #0f0;
+      text-decoration: none;
+      font-size: 1.5em;
+      padding: 5px 20px;
+      border: 1px solid #0f0;
+      transition: all 0.2s;
+      display: inline-block;
+    }
+    .menu a:hover {
+      background-color: #0f0;
+      color: #000;
+    }
+    .crt::before {
+      content: " ";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+      z-index: 2;
+      background-size: 100% 2px, 3px 100%;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body class="crt">
+  <div class="container">
+    <h1>CELESTIA GOTH OS</h1>
+    <h2>9999 IN 1 GAMES - CHOOSE YOUR NIGHTMARE</h2>
+    <ul class="menu">
+      <% @episodes.each do |id, ep| %>
+        <li><a href="/game/<%= id %>">GAME <%= id %>: <%= ep[:title] %> (Boss: <%= ep[:villain] %>)</a></li>
+      <% end %>
+      <!-- Fake entries to simulate 9999 -->
+      <li><a href="#">GAME 3: SUPER PONY BROS (LOCKED)</a></li>
+      <li><a href="#">GAME 4: TETRIS OF DISCORD (LOCKED)</a></li>
+      <li><a href="#">... 9995 MORE GAMES (LOCKED) ...</a></li>
+    </ul>
+  </div>
+</body>
+</html>

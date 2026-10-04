@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GAME <%= @episode[:title] %></title>
+  <style>
+    body {
+      background-color: #000;
+      color: <%= @hsb_color %>;
+      font-family: 'Courier New', Courier, monospace;
+      margin: 0;
+      overflow: hidden;
+    }
+    #game-container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 2s ease-out;
+    }
+    #report-container {
+      display: none;
+      opacity: 0;
+      width: 80%;
+      margin: 50px auto;
+      border: 2px solid <%= @hsb_color %>;
+      padding: 20px;
+      transition: opacity 2s ease-in;
+      background-color: #111;
+    }
+    canvas {
+      border: 4px solid <%= @hsb_color %>;
+      background-color: #222;
+    }
+    .timer {
+      font-size: 2em;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+    .btn {
+      color: <%= @hsb_color %>;
+      background: transparent;
+      border: 2px solid <%= @hsb_color %>;
+      padding: 10px 20px;
+      font-size: 1.2em;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 20px;
+    }
+    .btn:hover {
+      background: <%= @hsb_color %>;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <div class="timer">TIME REMAINING: <span id="time">45</span>s</div>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <p>Use ARROW KEYS to try and defeat <%= @episode[:villain] %>. (Spoiler: You can't)</p>
+  </div>
+
+  <div id="report-container">
+    <h2>SYSTEM FAILURE: <%= @episode[:villain] %> WINS</h2>
+    <h3>AUDIO ENGINEERING DIAGNOSTIC LOG</h3>
+    <div id="log-content">
+      <p>> ANALYZING EPISODE PLOT AND TRANSCRIPT...</p>
+      <p>> ERROR: Phase cancellation detected in protagonist's mix.</p>
+      <p>> <%= @episode[:villain] %> has applied a brickwall limiter to your dynamics, crushing your harmonic structure.</p>
+      <p>> To overcome this, you must rethink your compositional arrangement and mastering chain.</p>
+      <p>> REFERENCING: 'Compendio_Tecnicas_Composicion.pdf' & 'Film_Scoring_Literary_Encyclopedia_Complete.pdf'</p>
+      <p>> We suggest applying parallel compression to the friendship elements and using a Lydian mode modulation to counter the villain's minor scale theme.</p>
+    </div>
+    <a href="/report/<%= params[:ep] %>" class="btn" target="_blank">EXPORT FULL 20-PAGE DIAGNOSTIC (PDF)</a>
+    <br><br>
+    <a href="/" class="btn">RETURN TO OS MENU</a>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Simple impossible game logic
+    let player = { x: 400, y: 500, w: 20, h: 20, color: '#fff' };
+    let boss = { x: 350, y: 50, w: 100, h: 100, color: '<%= @hsb_color %>' };
+    let bullets = [];
+    
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') player.x -= 20;
+      if (e.key === 'ArrowRight') player.x += 20;
+    });
+
+    function loop() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Draw boss
+      ctx.fillStyle = boss.color;
+      ctx.fillRect(boss.x, boss.y, boss.w, boss.h);
+      
+      // Boss shoots impossible amount of bullets
+      if (Math.random() < 0.2) {
+        bullets.push({ x: boss.x + boss.w/2, y: boss.y + boss.h, vx: (Math.random() - 0.5) * 10, vy: 5 + Math.random() * 5 });
+      }
+      
+      ctx.fillStyle = '#f00';
+      bullets.forEach(b => {
+        b.x += b.vx;
+        b.y += b.vy;
+        ctx.fillRect(b.x, b.y, 10, 10);
+      });
+      
+      // Draw player
+      ctx.fillStyle = player.color;
+      ctx.fillRect(player.x, player.y, player.w, player.h);
+      
+      requestAnimationFrame(loop);
+    }
+    
+    loop();
+
+    // Timer logic
+    let timeLeft = 45;
+    const timeEl = document.getElementById('time');
+    const gameContainer = document.getElementById('game-container');
+    const reportContainer = document.getElementById('report-container');
+
+    const timer = setInterval(() => {
+      timeLeft--;
+      timeEl.innerText = timeLeft;
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        // Game Over Sequence
+        gameContainer.style.opacity = 0;
+        setTimeout(() => {
+          gameContainer.style.display = 'none';
+          reportContainer.style.display = 'block';
+          // Trigger reflow
+          void reportContainer.offsetWidth;
+          reportContainer.style.opacity = 1;
+        }, 2000);
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
