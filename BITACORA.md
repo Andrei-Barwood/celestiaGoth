@@ -32,3 +32,9 @@ El objetivo principal es traducir los conflictos narrativos de cada episodio a m
 - Añadir el web scraper / importador automático para procesar los más de 200 episodios y poblar la carpeta `data/` y el diccionario `EPISODES` en `app.rb`.
 - Pulir mecánicas visuales del juego para reflejar características específicas de cada villano.
 - Integrar la base de datos de colores `https://mlpvector.club/cg/pony/full` de manera automatizada.
+
+### 2026-10-04 (Fase de Planeación y Prompts Maestros)
+- [x] Extracción de la paleta de colores de Celestia's Goth Makeover (MLP Vector Club).
+- [x] Creación de script generador de prompts (`generate_prompts.rb`).
+- [x] Generación de `prompts/00_MASTER_PROMPT.md` estableciendo las reglas de juego y análisis de audio.
+- [x] Generación automatizada de 238 archivos `epXXX_prompt.md` basándose en las 9 temporadas y especiales del wiki de Fandom.
